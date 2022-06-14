@@ -73,16 +73,40 @@
 		7AAB6C46282FEE62008C5911 /* ASConcentration */ = {
 			isa = PBXGroup;
 			children = (
+				7AD01EF128591F8000F6270F /* MainGame */,
 				7AAB6C47282FEE62008C5911 /* AppDelegate.swift */,
 				7AAB6C49282FEE62008C5911 /* SceneDelegate.swift */,
-				7AAB6C4B282FEE62008C5911 /* GameController.swift */,
-				7AD01EED283A780F00F6270F /* GameModel.swift */,
-				7AD01EEF283A784900F6270F /* Card.swift */,
 				7AAB6C50282FEE64008C5911 /* Assets.xcassets */,
 				7AAB6C52282FEE64008C5911 /* LaunchScreen.storyboard */,
 				7AAB6C55282FEE64008C5911 /* Info.plist */,
 			);
 			path = ASConcentration;
+			sourceTree = "<group>";
+		};
+		7AD01EF128591F8000F6270F /* MainGame */ = {
+			isa = PBXGroup;
+			children = (
+				7AD01EF228591F9300F6270F /* ViewModel */,
+				7AD01EF328591FA500F6270F /* View */,
+			);
+			path = MainGame;
+			sourceTree = "<group>";
+		};
+		7AD01EF228591F9300F6270F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				7AD01EED283A780F00F6270F /* GameModel.swift */,
+				7AD01EEF283A784900F6270F /* Card.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		7AD01EF328591FA500F6270F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				7AAB6C4B282FEE62008C5911 /* GameController.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		99DD1C30B34F08AE1155E079 /* Pods */ = {
