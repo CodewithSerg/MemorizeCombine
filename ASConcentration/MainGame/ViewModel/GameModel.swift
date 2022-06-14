@@ -69,6 +69,13 @@ final class GameModel {
 		cards[tag].isFaceUp.toggle()
 		delegate?.flipCards(cards: [tag])
 	}
+
+	func newGameScreen() {
+		guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else { return }
+		let screen = GameViewController()
+		sceneDelegate.window?.rootViewController = screen
+		sceneDelegate.window?.makeKeyAndVisible()
+	}
 }
 
 

@@ -38,16 +38,17 @@ final class GameViewController: UIViewController {
     }
 
 	@objc private func resetGame() {
-		game.cards = [Card]()
-//		game.makeCards()
-		cardButtons = [UIButton]()
-		stackedGrid()
+//		game.cards = [Card]()
+////		game.makeCards()
+//		cardButtons = [UIButton]()
+//		stackedGrid()
+////		game.makeCards()
+////		makeCardButtons()
 //		game.makeCards()
 //		makeCardButtons()
-		game.makeCards()
-		makeCardButtons()
-		stackedGrid()
-		labelCount.text = "0"
+//		stackedGrid()
+//		labelCount.text = "0"
+		game.newGameScreen()
 	}
 
 	private func stackedGrid(){
@@ -58,7 +59,7 @@ final class GameViewController: UIViewController {
 		stackView.axis = .vertical
 		stackView.distribution = .fillEqually
 		stackView.spacing = 5
-//		stackView.addArrangedSubview(labelCount)
+		stackView.addArrangedSubview(labelCount)
 
 		for row in 0 ..< rows {
 			let horizontalSv = UIStackView()
@@ -74,7 +75,7 @@ final class GameViewController: UIViewController {
 			}
 			stackView.addArrangedSubview(horizontalSv)
 		}
-//		stackView.addArrangedSubview(newGameButton)
+		stackView.addArrangedSubview(newGameButton)
 		view.addSubview(stackView)
 
 		// add constraints
