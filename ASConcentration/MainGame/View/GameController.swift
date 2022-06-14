@@ -5,8 +5,8 @@
 //  Created by Sergey Antoniuk on 14.05.22.
 //
 
-import UIKit
 import SnapKit
+import UIKit
 
 final class GameController: UIViewController {
 

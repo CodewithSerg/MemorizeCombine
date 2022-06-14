@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Card: Hashable {
+struct Card: Equatable {
 
 	let emoji: String
     var isFaceUp = false
