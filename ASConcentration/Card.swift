@@ -8,8 +8,8 @@
 import Foundation
 
 struct Card: Hashable {
-    let id = UUID()
-    let emoji:String
+
+	let emoji: String
     var isFaceUp = false
     var isMatched = false
 }
