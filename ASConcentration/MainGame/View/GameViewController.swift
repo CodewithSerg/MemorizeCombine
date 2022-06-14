@@ -1,5 +1,5 @@
 //
-//  GameController.swift
+//  GameViewController.swift
 //  ASConcentration
 //
 //  Created by Sergey Antoniuk on 14.05.22.
@@ -8,7 +8,7 @@
 import SnapKit
 import UIKit
 
-final class GameController: UIViewController {
+final class GameViewController: UIViewController {
 
 	private var game = GameModel()
 	private var cardButtons = [UIButton]()
@@ -18,7 +18,7 @@ final class GameController: UIViewController {
 		label.textAlignment = .center
 		label.textColor = .white
 		label.font = .systemFont(ofSize: 40)
-		label.text = "0"
+		label.text = "\(Int.zero)"
 		return label
 	}()
 
@@ -58,7 +58,7 @@ final class GameController: UIViewController {
 		stackView.axis = .vertical
 		stackView.distribution = .fillEqually
 		stackView.spacing = 5
-		stackView.addArrangedSubview(labelCount)
+//		stackView.addArrangedSubview(labelCount)
 
 		for row in 0 ..< rows {
 			let horizontalSv = UIStackView()
@@ -74,12 +74,12 @@ final class GameController: UIViewController {
 			}
 			stackView.addArrangedSubview(horizontalSv)
 		}
-		stackView.addArrangedSubview(newGameButton)
+//		stackView.addArrangedSubview(newGameButton)
 		view.addSubview(stackView)
 
 		// add constraints
 		stackView.snp.makeConstraints {
-			$0.trailing.leading.top.bottom.equalToSuperview().inset(5)
+			$0.edges.equalToSuperview().inset(5)
 		}
 	}
 
@@ -102,7 +102,7 @@ final class GameController: UIViewController {
 	}
 }
 
-extension GameController: GameDelegate {
+extension GameViewController: GameDelegate {
 	func flipCards(cards: [Int]) {
 		cards.forEach {cardButtons[$0].setTitle(game.cards[$0].isFaceUp ? game.cards[$0].emoji : "", for: .normal)}
 	}

@@ -14,15 +14,17 @@ protocol GameDelegate: AnyObject {
 	func changeCount(count: Int)
 }
 
+protocol GameModelProtocol {
+	
+}
+
 final class GameModel {
 
-	private var resourses2 = [ "🐶","🦋","🐰","🐝","🐽","🐸","🍏"]
-	private var emojies = [String]()
+	private var emojies = ["🐶","🦋","🐰","🐝","🐽","🐸","🍏"]
 	var cards = [Card]()
 	weak var delegate: GameDelegate?
 
 	var choosenTags = [Int]()
-//	var choosenCards = [Card]()
 	var countResult = 0 {
 		didSet {
 			delegate?.changeCount(count: countResult)
@@ -35,17 +37,16 @@ final class GameModel {
     }
 
 	func makeCards() {
-		emojies = resourses2 + resourses2
-		emojies.shuffle()
-		cards = emojies.map{
-			Card(emoji: $0)
+		emojies.forEach {
+			cards.append(contentsOf: [Card(emoji: $0), Card(emoji: $0)])
 		}
+		cards.shuffle()
 	}
 
 	func buttonTapped(tag: Int) {
 		inMemoryCards.append(tag)
 		if choosenTags.contains(tag) {
-			countResult -= 1
+			countResult -= 1 // to count result
 		}
 		choosenTags.append(tag)
 		if inMemoryCards.count == 2,
@@ -55,7 +56,7 @@ final class GameModel {
 		{
 			inMemoryCards.forEach { cards[$0].isMatched = true}
 			delegate?.removeMatchedCards(cards: inMemoryCards)
-			countResult += 2
+			countResult += 2 // to count result
 			inMemoryCards = [Int]()
 			return
 		}
