@@ -54,6 +54,9 @@ final class GameModel {
 		   cards[first].emoji == cards[tag].emoji,
 		   first != tag
 		{
+			cards[tag].isFaceUp.toggle()
+			delegate?.flipCards(cards: [tag])
+			
 			inMemoryCards.forEach { cards[$0].isMatched = true}
 			delegate?.removeMatchedCards(cards: inMemoryCards)
 			countResult += 2 // to count result

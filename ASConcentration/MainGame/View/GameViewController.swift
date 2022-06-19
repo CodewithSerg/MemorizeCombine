@@ -109,7 +109,9 @@ extension GameViewController: GameDelegate {
 	}
 
 	func removeMatchedCards(cards: [Int]) {
-		cards.forEach {cardButtons[$0].alpha = 0}
+		UIView.animate(withDuration: 1) {
+			cards.forEach {self.cardButtons[$0].alpha = 0}
+		}
 	}
 
 	func changeCount(count: Int) {
