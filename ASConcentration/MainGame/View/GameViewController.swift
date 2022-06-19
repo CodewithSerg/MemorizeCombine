@@ -10,7 +10,7 @@ import UIKit
 
 final class GameViewController: UIViewController {
 
-	private var game = GameModel()
+	private var game: GameModelProtocol
 	private var cardButtons = [UIButton]()
 
 	private let labelCount: UILabel = {
@@ -29,6 +29,15 @@ final class GameViewController: UIViewController {
 		return newGameButton
 	}()
 
+	init() {
+		game = GameModel()
+		super.init(nibName: nil, bundle: nil)
+	}
+
+	required init?(coder aDecoder: NSCoder) {
+		fatalError("init(coder:) has not been implemented")
+	}
+
     override func viewDidLoad() {
         super.viewDidLoad()
 		makeCardButtons()
@@ -37,23 +46,9 @@ final class GameViewController: UIViewController {
 		self.view.backgroundColor = .blue
     }
 
-	@objc private func resetGame() {
-//		game.cards = [Card]()
-////		game.makeCards()
-//		cardButtons = [UIButton]()
-//		stackedGrid()
-////		game.makeCards()
-////		makeCardButtons()
-//		game.makeCards()
-//		makeCardButtons()
-//		stackedGrid()
-//		labelCount.text = "0"
-		game.newGameScreen()
-	}
-
 	private func stackedGrid(){
 		let columns = UIScreen.main.bounds.width > UIScreen.main.bounds.width ? 6 : 4
-		let rows = Int(ceil(Float(game.cards.count)/Float(columns)))
+		let rows = Int(ceil(Float(game.cards.count) / Float(columns)))
 
 		let stackView = UIStackView()
 		stackView.axis = .vertical
@@ -68,9 +63,9 @@ final class GameViewController: UIViewController {
 			horizontalSv.spacing = 5
 
 			for col in 0 ..< columns {
-				let defButton = UIButton()
-				defButton.alpha = 0
-				horizontalSv.addArrangedSubview(cardButtons[safe: row * columns + col] ?? defButton)
+				let makeFullRawButton = UIButton()
+				makeFullRawButton.alpha = 0
+				horizontalSv.addArrangedSubview(cardButtons[safe: row * columns + col] ?? makeFullRawButton)
 
 			}
 			stackView.addArrangedSubview(horizontalSv)
@@ -78,7 +73,6 @@ final class GameViewController: UIViewController {
 		stackView.addArrangedSubview(newGameButton)
 		view.addSubview(stackView)
 
-		// add constraints
 		stackView.snp.makeConstraints {
 			$0.edges.equalToSuperview().inset(5)
 		}
@@ -91,7 +85,6 @@ final class GameViewController: UIViewController {
 			button.titleLabel?.font = .systemFont(ofSize: 40)
 			button.layer.cornerRadius = 5
 			button.backgroundColor = .orange
-			// add tag to identify at array
 			button.tag = $0
 			button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
 			return button
@@ -101,21 +94,55 @@ final class GameViewController: UIViewController {
 	@objc private func buttonTapped(button: UIButton) {
 		game.buttonTapped(tag: button.tag)
 	}
+	@objc private func resetGame() {
+//		game.cards = [Card]()
+////		game.makeCards()
+//		cardButtons = [UIButton]()
+//		stackedGrid()
+////		game.makeCards()
+////		makeCardButtons()
+//		game.makeCards()
+//		makeCardButtons()
+//		stackedGrid()
+//		labelCount.text = "0"
+		game.newGameScreen()
+	}
 }
 
+// MARK: - GameDelegate
+
 extension GameViewController: GameDelegate {
+	func flipCard(cardIndex: Int) {
+		UIView.animate(withDuration: 1) {
+			self.cardButtons[cardIndex].alpha = 0
+		}
+		cardButtons[cardIndex].setTitle(game.cards[cardIndex].isFaceUp ? game.cards[cardIndex].emoji : "", for: .normal)
+		UIView.animate(withDuration: 1) {
+			self.cardButtons[cardIndex].alpha = 1
+		}
+	}
+
 	func flipCards(cards: [Int]) {
-		cards.forEach {cardButtons[$0].setTitle(game.cards[$0].isFaceUp ? game.cards[$0].emoji : "", for: .normal)}
+		UIView.animate(withDuration: 1) {
+			cards.forEach { self.cardButtons[$0].alpha = 0 }
+		}
+		cards.forEach {
+			cardButtons[$0].setTitle(game.cards[$0].isFaceUp ? game.cards[$0].emoji : "", for: .normal)
+		}
+		UIView.animate(withDuration: 1) {
+			cards.forEach { self.cardButtons[$0].alpha = 1 }
+		}
+
 	}
 
 	func removeMatchedCards(cards: [Int]) {
 		UIView.animate(withDuration: 1) {
-			cards.forEach {self.cardButtons[$0].alpha = 0}
+			cards.forEach { self.cardButtons[$0].alpha = 0 }
 		}
 	}
 
 	func changeCount(count: Int) {
-		labelCount.text = String(count)
+		labelCount.text = "\(count)"
 	}
 }
 
