@@ -100,7 +100,7 @@ final class GameViewController: UIViewController {
 	}
 
 	private func makeCardButtons() {
-		cardButtons = game.cards.enumerated().map{
+		cardButtons = game.cards.enumerated().map {
 			let button = UIButton()
 			button.setTitle($1.isFaceUp ? $1.emoji : "", for: .normal)
 			button.titleLabel?.font = .systemFont(ofSize: 40)
@@ -156,7 +156,3 @@ extension GameViewController: GameDelegate {
 		labelCount.text = "\(count)"
 	}
 }
-
-
-
-

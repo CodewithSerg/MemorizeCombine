@@ -28,7 +28,7 @@ protocol GameModelProtocol {
 
 final class GameModel: GameModelProtocol {
 
-	private var emojies = ["🐶","🦋","🐰","🐝","🐽","🐸","🍏"]
+	private var emojies = ["🐶", "🦋", "🐰", "🐝", "🐽", "🐸", "🍏"]
 	weak var delegate: GameDelegate?
 	private var choosenTags = [Int]()
 	private var countResult = 0 {
@@ -43,18 +43,17 @@ final class GameModel: GameModelProtocol {
 		makeCards()
     }
 
-	func buttonTapped(tag: Int) {
+						   func buttonTapped(tag: Int) {
 		if choosenTags.contains(tag) {
 			countResult -= 1 // to count result
 		}
 		choosenTags.append(tag)
-		
+
 		inMemoryCards.append(tag)
 		if inMemoryCards.count == 2,
 		   let first = inMemoryCards.first,
 		   cards[first].emoji == cards[tag].emoji,
-		   first != tag
-		{
+		   first != tag {
 			cards[tag].isFaceUp.toggle()
 			delegate?.flipCard(cardIndex: tag)
 
@@ -63,8 +62,7 @@ final class GameModel: GameModelProtocol {
 			countResult += 2 // to count result
 			inMemoryCards = [Int]()
 			return
-		}
-		else if inMemoryCards.count > 2 {
+		} else if inMemoryCards.count > 2 {
 			inMemoryCards.forEach { cards[$0].isFaceUp.toggle()}
 			delegate?.flipCards(cards: inMemoryCards)
 			inMemoryCards = [tag]
@@ -88,5 +86,3 @@ final class GameModel: GameModelProtocol {
 		cards.shuffle()
 	}
 }
-
-
