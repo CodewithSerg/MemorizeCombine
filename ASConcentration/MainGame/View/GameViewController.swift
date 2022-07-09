@@ -22,6 +22,14 @@ final class GameViewController: UIViewController {
 		return label
 	}()
 
+	private let stackView: UIStackView = {
+		let stackView = UIStackView()
+		stackView.axis = .vertical
+		stackView.distribution = .fillEqually
+		stackView.spacing = 5
+		return stackView
+	}()
+
 	private let newGameButton: UIButton = {
 		let newGameButton = UIButton(type: .system)
 		newGameButton.setTitle("NEW GAME", for: .normal)
@@ -42,19 +50,14 @@ final class GameViewController: UIViewController {
         super.viewDidLoad()
 		makeCardButtons()
         stackedGrid()
+		setupView()
 		game.delegate = self
 		self.view.backgroundColor = .blue
     }
 
-	private func stackedGrid(){
+	private func stackedGrid() {
 		let columns = UIScreen.main.bounds.width > UIScreen.main.bounds.width ? 6 : 4
 		let rows = Int(ceil(Float(game.cards.count) / Float(columns)))
-
-		let stackView = UIStackView()
-		stackView.axis = .vertical
-		stackView.distribution = .fillEqually
-		stackView.spacing = 5
-		stackView.addArrangedSubview(labelCount)
 
 		for row in 0 ..< rows {
 			let horizontalSv = UIStackView()
@@ -70,11 +73,29 @@ final class GameViewController: UIViewController {
 			}
 			stackView.addArrangedSubview(horizontalSv)
 		}
-		stackView.addArrangedSubview(newGameButton)
+	}
+
+	private func setupView() {
+		view.addSubview(labelCount)
 		view.addSubview(stackView)
+		view.addSubview(newGameButton)
+
+		labelCount.snp.makeConstraints {
+			$0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(10)
+			$0.leading.trailing.equalToSuperview().inset(24)
+			$0.centerX.equalToSuperview()
+		}
 
 		stackView.snp.makeConstraints {
-			$0.edges.equalToSuperview().inset(5)
+			$0.top.equalTo(labelCount.snp.bottom)
+			$0.height.equalToSuperview().multipliedBy(0.66)
+			$0.leading.trailing.equalToSuperview().inset(5)
+		}
+
+		newGameButton.snp.makeConstraints {
+			$0.top.equalTo(stackView.snp.bottom).offset(16)
+			$0.centerX.equalToSuperview()
+			$0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-10)
 		}
 	}
 
@@ -95,16 +116,6 @@ final class GameViewController: UIViewController {
 		game.buttonTapped(tag: button.tag)
 	}
 	@objc private func resetGame() {
-//		game.cards = [Card]()
-////		game.makeCards()
-//		cardButtons = [UIButton]()
-//		stackedGrid()
-////		game.makeCards()
-////		makeCardButtons()
-//		game.makeCards()
-//		makeCardButtons()
-//		stackedGrid()
-//		labelCount.text = "0"
 		game.newGameScreen()
 	}
 }
