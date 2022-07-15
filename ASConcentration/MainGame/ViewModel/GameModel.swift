@@ -22,6 +22,7 @@ protocol GameDelegate: AnyObject {
 protocol GameModelProtocol {
 	var cards: [Card] { get set }
 	var delegate: GameDelegate? { get set }
+
 	func buttonTapped(tag: Int)
 	func newGameScreen()
 }
@@ -43,7 +44,7 @@ final class GameModel: GameModelProtocol {
 		makeCards()
     }
 
-						   func buttonTapped(tag: Int) {
+	func buttonTapped(tag: Int) {
 		if choosenTags.contains(tag) {
 			countResult -= 1 // to count result
 		}
@@ -61,19 +62,20 @@ final class GameModel: GameModelProtocol {
 			delegate?.removeMatchedCards(cards: inMemoryCards)
 			countResult += 2 // to count result
 			inMemoryCards = [Int]()
-			return
 		} else if inMemoryCards.count > 2 {
-			inMemoryCards.forEach { cards[$0].isFaceUp.toggle()}
+			inMemoryCards.forEach { cards[$0].isFaceUp.toggle() }
 			delegate?.flipCards(cards: inMemoryCards)
 			inMemoryCards = [tag]
-			return
+		} else {
+			cards[tag].isFaceUp.toggle()
+			delegate?.flipCard(cardIndex: tag)
 		}
-		cards[tag].isFaceUp.toggle()
-		delegate?.flipCard(cardIndex: tag)
 	}
 
 	func newGameScreen() {
-		guard let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate else { return }
+		guard
+			let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate
+		else { return }
 		let screen = GameViewController()
 		sceneDelegate.window?.rootViewController = screen
 		sceneDelegate.window?.makeKeyAndVisible()

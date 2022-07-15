@@ -5,8 +5,15 @@
 //  Created by Sergey Antoniuk on 14.05.22.
 //
 
+// MVVM -> Корневой экран, swinject, модуль статистики. Лучшее время, лучший результат, последние 5 результатов,
+// TODO: Realm -> RealmManager, R.generated -> Локализация, цвета чтобы в темной и светлой теме норм работали
+// TODO: Таймер добавить
+// По желанию: почитать лекцию, глянуть анимацию переворота карты
+
 import SnapKit
 import UIKit
+
+
 
 final class GameViewController: UIViewController {
 
@@ -42,6 +49,7 @@ final class GameViewController: UIViewController {
 		super.init(nibName: nil, bundle: nil)
 	}
 
+	@available (*, unavailable)
 	required init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
@@ -52,7 +60,7 @@ final class GameViewController: UIViewController {
         stackedGrid()
 		setupView()
 		game.delegate = self
-		self.view.backgroundColor = .blue
+		view.backgroundColor = .blue
     }
 
 	private func stackedGrid() {
@@ -81,7 +89,7 @@ final class GameViewController: UIViewController {
 		view.addSubview(newGameButton)
 
 		labelCount.snp.makeConstraints {
-			$0.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(10)
+			$0.top.equalTo(view.safeAreaLayoutGuide.snp.top).inset(10)
 			$0.leading.trailing.equalToSuperview().inset(24)
 			$0.centerX.equalToSuperview()
 		}
@@ -89,13 +97,15 @@ final class GameViewController: UIViewController {
 		stackView.snp.makeConstraints {
 			$0.top.equalTo(labelCount.snp.bottom)
 			$0.height.equalToSuperview().multipliedBy(0.66)
-			$0.leading.trailing.equalToSuperview().inset(5)
+			$0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).inset(8)
+			$0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(8)
 		}
 
 		newGameButton.snp.makeConstraints {
 			$0.top.equalTo(stackView.snp.bottom).offset(16)
 			$0.centerX.equalToSuperview()
-			$0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-10)
+			$0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).inset(10)
+			$0.height.equalTo(40)
 		}
 	}
 
@@ -127,7 +137,9 @@ extension GameViewController: GameDelegate {
 		UIView.animate(withDuration: 1) {
 			self.cardButtons[cardIndex].alpha = 0
 		}
-		cardButtons[cardIndex].setTitle(game.cards[cardIndex].isFaceUp ? game.cards[cardIndex].emoji : "", for: .normal)
+		cardButtons[cardIndex].setTitle(
+			game.cards[cardIndex].isFaceUp ? game.cards[cardIndex].emoji : "", for: .normal
+		)
 		UIView.animate(withDuration: 1) {
 			self.cardButtons[cardIndex].alpha = 1
 		}
@@ -138,12 +150,14 @@ extension GameViewController: GameDelegate {
 			cards.forEach { self.cardButtons[$0].alpha = 0 }
 		}
 		cards.forEach {
-			cardButtons[$0].setTitle(game.cards[$0].isFaceUp ? game.cards[$0].emoji : "", for: .normal)
+			cardButtons[$0].setTitle(
+				game.cards[$0].isFaceUp ? game.cards[$0].emoji : "",
+				for: .normal
+			)
 		}
 		UIView.animate(withDuration: 1) {
 			cards.forEach { self.cardButtons[$0].alpha = 1 }
 		}
-
 	}
 
 	func removeMatchedCards(cards: [Int]) {

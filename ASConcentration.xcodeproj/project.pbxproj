@@ -138,6 +138,7 @@
 				7AAB6C41282FEE62008C5911 /* Frameworks */,
 				7AAB6C42282FEE62008C5911 /* Resources */,
 				0F44A55A63350C24929AADC2 /* [CP] Embed Pods Frameworks */,
+				7AD01EF8287D698000F6270F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -209,6 +210,23 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ASConcentration/Pods-ASConcentration-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		7AD01EF8287D698000F6270F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "";
 		};
 		C3DFB0378E2EB712467AC095 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
