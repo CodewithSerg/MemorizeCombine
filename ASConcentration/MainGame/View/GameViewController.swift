@@ -12,20 +12,25 @@
 
 import SnapKit
 import UIKit
+import Combine
 
 
+final class GameViewController: UIViewController, Coordinating {
 
-final class GameViewController: UIViewController {
+	var coordinator: Coordinator?
 
 	private var game: GameModelProtocol
 	private var cardButtons = [UIButton]()
+
+	private let outputVC = PassthroughSubject<GameModel.Output, Never>()
+	private var cancellable = Set<AnyCancellable>()
 
 	private let labelCount: UILabel = {
 		let label = UILabel()
 		label.textAlignment = .center
 		label.textColor = .white
 		label.font = .systemFont(ofSize: 40)
-		label.text = "\(Int.zero)"
+		label.text = "Timer : \(Int.zero)"
 		return label
 	}()
 
@@ -44,8 +49,8 @@ final class GameViewController: UIViewController {
 		return newGameButton
 	}()
 
-	init() {
-		game = GameModel()
+	init(model: GameModelProtocol) {
+		self.game = model
 		super.init(nibName: nil, bundle: nil)
 	}
 
@@ -56,16 +61,65 @@ final class GameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-		makeCardButtons()
-        stackedGrid()
+//		stackedGrid(cards: game.cards)
 		setupView()
-		game.delegate = self
 		view.backgroundColor = .blue
+		bind()
+		outputVC.send(.viewLoaded)
     }
 
-	private func stackedGrid() {
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		outputVC.send(.startTimer)
+	}
+
+	private func bind() {
+		let input = game.transform(outputVC: outputVC.eraseToAnyPublisher())
+		input
+			.receive(on: DispatchQueue.main)
+			.sink { [weak self] event in
+				switch event {
+				case .makeCards(cards: let cards):
+					self?.stackedGrid(cards: cards)
+				case .redrawCards(cards: let cards):
+					self?.redrawCardButtons(cards: cards)
+				case .makeNewCards(cards: let cards):
+					self?.makeNewCards(cards: cards)
+				case .timerCount(count: let count):
+					self?.labelCount.text = "Timer : \(count)"
+				}
+			}
+			.store(in: &cancellable)
+
+	}
+
+	
+
+	private func redrawCardButtons(cards: [Card]) {
+		cards.enumerated().forEach {
+			cardButtons[$0].setTitle($1.isFaceUp ? $1.emoji : "", for: .normal)
+
+			let cardButton = cardButtons[$0]
+			if $1.isMatched {
+				UIView.animate(withDuration: 1) {
+					cardButton.alpha = 0
+				}
+			}
+		}
+	}
+
+	private func makeNewCards(cards: [Card]) {
+		cardButtons.forEach {
+			$0.setTitle("", for: .normal)
+			$0.alpha = 1
+		}
+	}
+
+	
+
+	private func stackedGrid(cards: [Card]) {
 		let columns = UIScreen.main.bounds.width > UIScreen.main.bounds.width ? 6 : 4
-		let rows = Int(ceil(Float(game.cards.count) / Float(columns)))
+		let rows = Int(ceil(Float(cards.count) / Float(columns)))
 
 		for row in 0 ..< rows {
 			let horizontalSv = UIStackView()
@@ -74,10 +128,11 @@ final class GameViewController: UIViewController {
 			horizontalSv.spacing = 5
 
 			for col in 0 ..< columns {
-				let makeFullRawButton = UIButton()
-				makeFullRawButton.alpha = 0
-				horizontalSv.addArrangedSubview(cardButtons[safe: row * columns + col] ?? makeFullRawButton)
-
+//				let makeFullRawButton = UIButton()
+//				makeFullRawButton.alpha = 0
+//				horizontalSv.addArrangedSubview(cardButtons[safe: row * columns + col] ?? makeFullRawButton)
+				let indexCard = row * columns + col
+				horizontalSv.addArrangedSubview(makeCardButton(card: cards[safe: indexCard], indexCard: indexCard) ?? UIButton())
 			}
 			stackView.addArrangedSubview(horizontalSv)
 		}
@@ -109,64 +164,63 @@ final class GameViewController: UIViewController {
 		}
 	}
 
-	private func makeCardButtons() {
-		cardButtons = game.cards.enumerated().map {
-			let button = UIButton()
-			button.setTitle($1.isFaceUp ? $1.emoji : "", for: .normal)
-			button.titleLabel?.font = .systemFont(ofSize: 40)
-			button.layer.cornerRadius = 5
-			button.backgroundColor = .orange
-			button.tag = $0
-			button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
-			return button
-		}
+	private func makeCardButton(card: Card?, indexCard: Int) -> UIButton? {
+		guard let card = card else { return nil }
+		let button = UIButton()
+		button.setTitle(card.isFaceUp ? card.emoji : "", for: .normal)
+		button.titleLabel?.font = .systemFont(ofSize: 40)
+		button.layer.cornerRadius = 5
+		button.backgroundColor = .orange
+		button.tag = indexCard
+		button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+		cardButtons.append(button)
+		return button
 	}
 
+
 	@objc private func buttonTapped(button: UIButton) {
-		game.buttonTapped(tag: button.tag)
+		outputVC.send(.cardTapped(tag: button.tag))
 	}
+
 	@objc private func resetGame() {
-		game.newGameScreen()
+//		game.newGameScreen()
+		outputVC.send(.newGameTapped)
 	}
 }
 
 // MARK: - GameDelegate
 
-extension GameViewController: GameDelegate {
-	func flipCard(cardIndex: Int) {
-		UIView.animate(withDuration: 1) {
-			self.cardButtons[cardIndex].alpha = 0
-		}
-		cardButtons[cardIndex].setTitle(
-			game.cards[cardIndex].isFaceUp ? game.cards[cardIndex].emoji : "", for: .normal
-		)
-		UIView.animate(withDuration: 1) {
-			self.cardButtons[cardIndex].alpha = 1
-		}
-	}
-
-	func flipCards(cards: [Int]) {
-		UIView.animate(withDuration: 1) {
-			cards.forEach { self.cardButtons[$0].alpha = 0 }
-		}
-		cards.forEach {
-			cardButtons[$0].setTitle(
-				game.cards[$0].isFaceUp ? game.cards[$0].emoji : "",
-				for: .normal
-			)
-		}
-		UIView.animate(withDuration: 1) {
-			cards.forEach { self.cardButtons[$0].alpha = 1 }
-		}
-	}
-
-	func removeMatchedCards(cards: [Int]) {
-		UIView.animate(withDuration: 1) {
-			cards.forEach { self.cardButtons[$0].alpha = 0 }
-		}
-	}
-
-	func changeCount(count: Int) {
-		labelCount.text = "\(count)"
-	}
-}
+//extension GameViewController: GameDelegate {
+//	func flipCard(cardIndex: Int) {
+//		UIView.animate(withDuration: 1) {
+//			self.cardButtons[cardIndex].alpha = 0
+//		}
+//		cardButtons[cardIndex].setTitle(
+//			game.cards[cardIndex].isFaceUp ? game.cards[cardIndex].emoji : "", for: .normal
+//		)
+//		UIView.animate(withDuration: 1) {
+//			self.cardButtons[cardIndex].alpha = 1
+//		}
+//	}
+//
+//	func flipCards(cards: [Int]) {
+//		UIView.animate(withDuration: 1) {
+//			cards.forEach { self.cardButtons[$0].alpha = 0 }
+//		}
+//		cards.forEach {
+//			cardButtons[$0].setTitle(
+//				game.cards[$0].isFaceUp ? game.cards[$0].emoji : "",
+//				for: .normal
+//			)
+//		}
+//		UIView.animate(withDuration: 1) {
+//			cards.forEach { self.cardButtons[$0].alpha = 1 }
+//		}
+//	}
+//
+//	func removeMatchedCards(cards: [Int]) {
+//		UIView.animate(withDuration: 1) {
+//			cards.forEach { self.cardButtons[$0].alpha = 0 }
+//		}
+//	}
+//}
