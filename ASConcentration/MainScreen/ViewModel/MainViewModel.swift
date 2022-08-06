@@ -9,4 +9,5 @@ import Foundation
 
 final class MainViewModel {
 	//it seems we not need this vm
+	//all logic is in coordinator
 }

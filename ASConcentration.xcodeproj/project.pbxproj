@@ -19,7 +19,7 @@
 		7AD01EFD2882F25900F6270F /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD01EFC2882F25900F6270F /* Coordinator.swift */; };
 		7AD01EFF2882F2F500F6270F /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD01EFE2882F2F500F6270F /* AppCoordinator.swift */; };
 		7AD01F06288361E400F6270F /* StatisticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD01F05288361E400F6270F /* StatisticViewController.swift */; };
-		7AD01F0A2883626000F6270F /* StatistcViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD01F092883626000F6270F /* StatistcViewModel.swift */; };
+		7AD01F0A2883626000F6270F /* StatistcModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD01F092883626000F6270F /* StatistcModel.swift */; };
 		7AD01F0F2883639400F6270F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD01F0E2883639400F6270F /* MainViewController.swift */; };
 		7AD01F11288363B800F6270F /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD01F10288363B800F6270F /* MainViewModel.swift */; };
 		7AD01F13288403CE00F6270F /* Coordinating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD01F12288403CE00F6270F /* Coordinating.swift */; };
@@ -47,7 +47,7 @@
 		7AD01EFC2882F25900F6270F /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		7AD01EFE2882F2F500F6270F /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		7AD01F05288361E400F6270F /* StatisticViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticViewController.swift; sourceTree = "<group>"; };
-		7AD01F092883626000F6270F /* StatistcViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatistcViewModel.swift; sourceTree = "<group>"; };
+		7AD01F092883626000F6270F /* StatistcModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatistcModel.swift; sourceTree = "<group>"; };
 		7AD01F0E2883639400F6270F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		7AD01F10288363B800F6270F /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		7AD01F12288403CE00F6270F /* Coordinating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinating.swift; sourceTree = "<group>"; };
@@ -171,7 +171,7 @@
 		7AD01F072883620000F6270F /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				7AD01F092883626000F6270F /* StatistcViewModel.swift */,
+				7AD01F092883626000F6270F /* StatistcModel.swift */,
 				7A185BEF28990BE700E188D9 /* FakeStorageManager.swift */,
 				7A185BED2898F2E000E188D9 /* Info.swift */,
 			);
@@ -370,7 +370,7 @@
 				7AD01EF0283A784900F6270F /* Card.swift in Sources */,
 				7AD01F06288361E400F6270F /* StatisticViewController.swift in Sources */,
 				7AD01EEE283A780F00F6270F /* GameModel.swift in Sources */,
-				7AD01F0A2883626000F6270F /* StatistcViewModel.swift in Sources */,
+				7AD01F0A2883626000F6270F /* StatistcModel.swift in Sources */,
 				7AD01F13288403CE00F6270F /* Coordinating.swift in Sources */,
 				7AD01F11288363B800F6270F /* MainViewModel.swift in Sources */,
 				7AD01F18288452A500F6270F /* StorageService.swift in Sources */,

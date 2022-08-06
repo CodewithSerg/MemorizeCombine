@@ -29,8 +29,8 @@ class AppCoordinator: Coordinator {
 	func eventOccured(with type: Event) {
 		switch type {
 		case .statisticButtonTapped:
-
-			var statisticVc: UIViewController & Coordinating = StatisticViewController()
+			let statisticModel = StatisticModel()
+			var statisticVc: UIViewController & Coordinating = StatisticViewController(vm: statisticModel)
 			statisticVc.coordinator = self
 			navigationController.setViewControllers([statisticVc], animated: true)
 		case .startGameButtonTapped:

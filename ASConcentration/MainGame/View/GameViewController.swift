@@ -23,7 +23,7 @@ final class GameViewController: UIViewController, Coordinating {
 	private var cardButtons = [UIButton]()
 
 	private let outputVC = PassthroughSubject<GameModel.Output, Never>()
-	private var cancellable = Set<AnyCancellable>()
+	private var bag = Set<AnyCancellable>()
 
 	private let labelCount: UILabel = {
 		let label = UILabel()
@@ -86,10 +86,10 @@ final class GameViewController: UIViewController, Coordinating {
 				case .makeNewCards(cards: let cards):
 					self?.makeNewCards(cards: cards)
 				case .timerCount(count: let count):
-					self?.labelCount.text = "Timer : \(count)"
+					self?.labelCount.text =  count
 				}
 			}
-			.store(in: &cancellable)
+			.store(in: &bag)
 	}
 
 	private func redrawCardButtons(cards: [Card]) {

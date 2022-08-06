@@ -27,24 +27,28 @@ final class GameModel: GameModelProtocol {
 //		case removeMatchedCards(cards: [Int])
 		case redrawCards(cards: [Card])
 		case makeCards(cards: [Card])
-		case timerCount(count: Int)
+		case timerCount(count: String)
 		case makeNewCards(cards: [Card])
 	}
 
-	private var emojies = ["🐶", "🦋", "🐰", "🐝", "🐽", "🐸", "🍏"]
+	private var emojies = ["🐶", "🦋"
 
+//						   , "🐰", "🐝", "🐽", "🐸", "🍏"
+	]
 	private var timerCount: Int = 0 {
 		didSet {
-			inputVC.send(.timerCount(count: timerCount))
+			inputVC.send(.timerCount(count: "Timer : \(timerCount)"))
 		}
 	}
 	private var inMemoryCards = [Int]() // 0...3 card
 	private var cards = [Card]()
 	private let inputVC = PassthroughSubject<GameModel.Input, Never>()
 	private var bag = Set<AnyCancellable>()
+	private var timer: AnyCancellable?
 
 	init() {
 		makeCards()
+		startTimer()
     }
 
 	func transform(outputVC: AnyPublisher<Output, Never>) -> AnyPublisher<Input, Never> {
@@ -53,17 +57,16 @@ final class GameModel: GameModelProtocol {
 			switch event {
 			case .viewLoaded:
 				self.inputVC.send(.makeCards(cards: self.cards))
+			case .startTimer:
+				self.startTimer()
 			case .cardTapped(tag: let num):
 				self.buttonTapped(tag: num)
 			case .newGameTapped:
-//				self.newGameScreen()
 				self.makeNewGame()
-			case .startTimer:
-				self.startTimer()
 			}
-	   }.store(in: &bag)
-	   return inputVC.eraseToAnyPublisher()
-	 }
+		}.store(in: &bag)
+		return inputVC.eraseToAnyPublisher()
+	}
 
 	private func buttonTapped(tag: Int) {
 		inMemoryCards.append(tag)
@@ -81,6 +84,10 @@ final class GameModel: GameModelProtocol {
 			cards[tag].isFaceUp.toggle()
 		}
 		inputVC.send(.redrawCards(cards: cards))
+		if cards.allSatisfy({ $0.isMatched == true }) {
+			inputVC.send(.timerCount(count: "Good Result: \(timerCount)"))
+			timer?.cancel()
+		}
 	}
 
 	private func makeNewGame() {
@@ -89,15 +96,16 @@ final class GameModel: GameModelProtocol {
 		makeCards()
 		inputVC.send(.makeNewCards(cards: cards))
 		timerCount = 0
+		startTimer()
 	}
 
 	private func startTimer() {
-		Timer.publish(every: 1, on: .main, in: .default)
+		timer = Timer.publish(every: 1, on: .main, in: .default)
 			.autoconnect()
 			.sink { [weak self] _ in
-				self?.timerCount += 1
+				guard let self = self else { return }
+				self.timerCount += 1
 			}
-			.store(in: &bag)
 	}
 
 	private func makeCards() {
