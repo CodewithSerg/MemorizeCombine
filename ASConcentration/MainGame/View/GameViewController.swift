@@ -90,10 +90,7 @@ final class GameViewController: UIViewController, Coordinating {
 				}
 			}
 			.store(in: &cancellable)
-
 	}
-
-	
 
 	private func redrawCardButtons(cards: [Card]) {
 		cards.enumerated().forEach {
@@ -115,8 +112,6 @@ final class GameViewController: UIViewController, Coordinating {
 		}
 	}
 
-	
-
 	private func stackedGrid(cards: [Card]) {
 		let columns = UIScreen.main.bounds.width > UIScreen.main.bounds.width ? 6 : 4
 		let rows = Int(ceil(Float(cards.count) / Float(columns)))
@@ -128,9 +123,6 @@ final class GameViewController: UIViewController, Coordinating {
 			horizontalSv.spacing = 5
 
 			for col in 0 ..< columns {
-//				let makeFullRawButton = UIButton()
-//				makeFullRawButton.alpha = 0
-//				horizontalSv.addArrangedSubview(cardButtons[safe: row * columns + col] ?? makeFullRawButton)
 				let indexCard = row * columns + col
 				horizontalSv.addArrangedSubview(makeCardButton(card: cards[safe: indexCard], indexCard: indexCard) ?? UIButton())
 			}
@@ -148,14 +140,12 @@ final class GameViewController: UIViewController, Coordinating {
 			$0.leading.trailing.equalToSuperview().inset(24)
 			$0.centerX.equalToSuperview()
 		}
-
 		stackView.snp.makeConstraints {
 			$0.top.equalTo(labelCount.snp.bottom)
 			$0.height.equalToSuperview().multipliedBy(0.66)
 			$0.leading.equalTo(view.safeAreaLayoutGuide.snp.leading).inset(8)
 			$0.trailing.equalTo(view.safeAreaLayoutGuide.snp.trailing).inset(8)
 		}
-
 		newGameButton.snp.makeConstraints {
 			$0.top.equalTo(stackView.snp.bottom).offset(16)
 			$0.centerX.equalToSuperview()
@@ -187,40 +177,3 @@ final class GameViewController: UIViewController, Coordinating {
 		outputVC.send(.newGameTapped)
 	}
 }
-
-// MARK: - GameDelegate
-
-//extension GameViewController: GameDelegate {
-//	func flipCard(cardIndex: Int) {
-//		UIView.animate(withDuration: 1) {
-//			self.cardButtons[cardIndex].alpha = 0
-//		}
-//		cardButtons[cardIndex].setTitle(
-//			game.cards[cardIndex].isFaceUp ? game.cards[cardIndex].emoji : "", for: .normal
-//		)
-//		UIView.animate(withDuration: 1) {
-//			self.cardButtons[cardIndex].alpha = 1
-//		}
-//	}
-//
-//	func flipCards(cards: [Int]) {
-//		UIView.animate(withDuration: 1) {
-//			cards.forEach { self.cardButtons[$0].alpha = 0 }
-//		}
-//		cards.forEach {
-//			cardButtons[$0].setTitle(
-//				game.cards[$0].isFaceUp ? game.cards[$0].emoji : "",
-//				for: .normal
-//			)
-//		}
-//		UIView.animate(withDuration: 1) {
-//			cards.forEach { self.cardButtons[$0].alpha = 1 }
-//		}
-//	}
-//
-//	func removeMatchedCards(cards: [Int]) {
-//		UIView.animate(withDuration: 1) {
-//			cards.forEach { self.cardButtons[$0].alpha = 0 }
-//		}
-//	}
-//}
