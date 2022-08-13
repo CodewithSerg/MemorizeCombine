@@ -8,19 +8,10 @@
 import UIKit
 import Combine
 
-class StatisticViewController: UIViewController, Coordinating, UITableViewDelegate, UITableViewDataSource {
-	var countInSection = 0
-	var infoData = [Info]()
-
-	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		countInSection
-	}
-
-
-	var coordinator: Coordinator?
+class StatisticViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
 	let vm: StatisticModelProtocol
-	private let outputVC = PassthroughSubject<StatisticModel.Output, Never>()
+//	private let outputVC = PassthroughSubject<StatisticModel.Output, Never>()
 	private var bag = Set<AnyCancellable>()
 
 	let tableView: UITableView = {
@@ -44,36 +35,20 @@ class StatisticViewController: UIViewController, Coordinating, UITableViewDelega
 		setupView()
 		tableView.delegate = self
 		tableView.dataSource = self
-//		fetchInfos()
 		bind()
     }
 
 	private func bind() {
-		let input = vm.transform(outputVC: outputVC.eraseToAnyPublisher())
-		input
-			.receive(on: DispatchQueue.main)
+		vm.inputVC
+			.receive(on: RunLoop.main)
 			.sink { [weak self] event in
 				switch event {
-				case .numberOfRowsInSection(count: let count):
-					self?.countInSection = count
-				case .makeInfos(info: let info):
-					self?.infoData = info
+				case .needUpdateTableView:
 					self?.tableView.reloadData()
 				}
 			}
 			.store(in: &bag)
 	}
-
-//	private func fetchInfos() {
-//
-//		vm.inputVC
-//			.receive(on: DispatchQueue.main)
-//			.sink {[weak self] _ in
-//				self?.tableView.reloadData()
-//			}
-//			.store(in: &bag)
-//		vm.fetchInfo()
-//	}
 
 	private func setupView() {
 		view.addSubview(tableView)
@@ -87,20 +62,18 @@ class StatisticViewController: UIViewController, Coordinating, UITableViewDelega
 
 	// MARK: - UITableViewDelegate, UITableViewDataSource
 
-//	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-////		vm.infoData.count
-//		outputVC.send(.needNumberOfRowsInSection)
-//	}
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+		vm.infoData.count
+	}
 
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-		guard let cell = tableView.dequeueReusableCell(withIdentifier: CustomCell.reuseIdentifier, for: indexPath) as? CustomCell else { return UITableViewCell() }
-//		vm.inputVC
-//				.receive(on: DispatchQueue.main)
-//				.sink { allInfo in
-//					cell.configureCell(with: allInfo[indexPath.row])
-//				}
-//				.store(in: &bag)
-			return cell
+		guard let cell = tableView.dequeueReusableCell(
+			withIdentifier: CustomCell.reuseIdentifier,
+			for: indexPath
+		) as? CustomCell else { return UITableViewCell() }
+		let info = vm.infoData[indexPath.row]
+		cell.configureCell(with: info)
+		return cell
 	}
 }
 

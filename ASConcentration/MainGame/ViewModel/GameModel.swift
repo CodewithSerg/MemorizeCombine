@@ -31,9 +31,8 @@ final class GameModel: GameModelProtocol {
 		case makeNewCards(cards: [Card])
 	}
 
-	private var emojies = ["🐶", "🦋"
-
-//						   , "🐰", "🐝", "🐽", "🐸", "🍏"
+	private var emojies = ["🐶", "🦋", "🐰",
+//						   "🐝", "🐽", "🐸", "🍏"
 	]
 	private var timerCount: Int = 0 {
 		didSet {
@@ -61,6 +60,7 @@ final class GameModel: GameModelProtocol {
 				self.startTimer()
 			case .cardTapped(tag: let num):
 				self.buttonTapped(tag: num)
+				self.checkResultOFGame() 
 			case .newGameTapped:
 				self.makeNewGame()
 			}
@@ -84,6 +84,9 @@ final class GameModel: GameModelProtocol {
 			cards[tag].isFaceUp.toggle()
 		}
 		inputVC.send(.redrawCards(cards: cards))
+	}
+
+	private func checkResultOFGame() {
 		if cards.allSatisfy({ $0.isMatched == true }) {
 			inputVC.send(.timerCount(count: "Good Result: \(timerCount)"))
 			timer?.cancel()

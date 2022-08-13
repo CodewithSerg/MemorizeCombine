@@ -15,9 +15,7 @@ import UIKit
 import Combine
 
 
-final class GameViewController: UIViewController, Coordinating {
-
-	var coordinator: Coordinator?
+final class GameViewController: UIViewController {
 
 	private var game: GameModelProtocol
 	private var cardButtons = [UIButton]()
@@ -61,7 +59,6 @@ final class GameViewController: UIViewController, Coordinating {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//		stackedGrid(cards: game.cards)
 		setupView()
 		view.backgroundColor = .blue
 		bind()

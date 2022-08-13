@@ -3,18 +3,18 @@
 //  ASConcentration
 //
 //  Created by Sergey Antoniuk on 17.07.22.
-//
+
 
 //import RealmSwift
 //
 //@objcMembers class UserObject: Object {
 //
-//	dynamic var firstName = String()
-//	dynamic var secondName = String()
+//	dynamic var date = String()
+//	dynamic var duration = Int()
 //
-//	convenience init(firstName: String, secondName: String) {
+//	convenience init(date: String, duration: String) {
 //		self.init()
-//		self.firstName = firstName
-//		self.secondName = secondName
+//		self.date = date
+//		self.duration = duration
 //	}
 //}

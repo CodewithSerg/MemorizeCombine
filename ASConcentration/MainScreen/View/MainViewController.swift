@@ -10,7 +10,6 @@ import UIKit
 class MainViewController: UIViewController, Coordinating {
 
 	var coordinator: Coordinator?
-	var vm = MainViewModel()
 
 	private let stackView: UIStackView = {
 		let stackView = UIStackView()

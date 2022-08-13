@@ -30,13 +30,11 @@ class AppCoordinator: Coordinator {
 		switch type {
 		case .statisticButtonTapped:
 			let statisticModel = StatisticModel()
-			var statisticVc: UIViewController & Coordinating = StatisticViewController(vm: statisticModel)
-			statisticVc.coordinator = self
+			var statisticVc: UIViewController = StatisticViewController(vm: statisticModel)
 			navigationController.setViewControllers([statisticVc], animated: true)
 		case .startGameButtonTapped:
 			let gameModel = GameModel()
-			var gameVc: UIViewController & Coordinating = GameViewController(model: gameModel)
-			gameVc.coordinator = self
+			var gameVc: UIViewController = GameViewController(model: gameModel)
 			navigationController.setViewControllers([gameVc], animated: true)
 		}
 	}

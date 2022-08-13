@@ -21,7 +21,6 @@
 		7AD01F06288361E400F6270F /* StatisticViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD01F05288361E400F6270F /* StatisticViewController.swift */; };
 		7AD01F0A2883626000F6270F /* StatistcModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD01F092883626000F6270F /* StatistcModel.swift */; };
 		7AD01F0F2883639400F6270F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD01F0E2883639400F6270F /* MainViewController.swift */; };
-		7AD01F11288363B800F6270F /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD01F10288363B800F6270F /* MainViewModel.swift */; };
 		7AD01F13288403CE00F6270F /* Coordinating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD01F12288403CE00F6270F /* Coordinating.swift */; };
 		7AD01F1528844AC600F6270F /* Dynamic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD01F1428844AC600F6270F /* Dynamic.swift */; };
 		7AD01F18288452A500F6270F /* StorageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7AD01F17288452A500F6270F /* StorageService.swift */; };
@@ -49,7 +48,6 @@
 		7AD01F05288361E400F6270F /* StatisticViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticViewController.swift; sourceTree = "<group>"; };
 		7AD01F092883626000F6270F /* StatistcModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatistcModel.swift; sourceTree = "<group>"; };
 		7AD01F0E2883639400F6270F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
-		7AD01F10288363B800F6270F /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		7AD01F12288403CE00F6270F /* Coordinating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinating.swift; sourceTree = "<group>"; };
 		7AD01F1428844AC600F6270F /* Dynamic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dynamic.swift; sourceTree = "<group>"; };
 		7AD01F17288452A500F6270F /* StorageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageService.swift; sourceTree = "<group>"; };
@@ -191,7 +189,6 @@
 			isa = PBXGroup;
 			children = (
 				7AD01F0C2883635800F6270F /* View */,
-				7AD01F0D2883636500F6270F /* ViewModel */,
 			);
 			path = MainScreen;
 			sourceTree = "<group>";
@@ -202,14 +199,6 @@
 				7AD01F0E2883639400F6270F /* MainViewController.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		7AD01F0D2883636500F6270F /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				7AD01F10288363B800F6270F /* MainViewModel.swift */,
-			);
-			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		7AD01F1628844AD700F6270F /* Binding */ = {
@@ -329,7 +318,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n";
 		};
 		C3DFB0378E2EB712467AC095 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -372,7 +361,6 @@
 				7AD01EEE283A780F00F6270F /* GameModel.swift in Sources */,
 				7AD01F0A2883626000F6270F /* StatistcModel.swift in Sources */,
 				7AD01F13288403CE00F6270F /* Coordinating.swift in Sources */,
-				7AD01F11288363B800F6270F /* MainViewModel.swift in Sources */,
 				7AD01F18288452A500F6270F /* StorageService.swift in Sources */,
 				7AD01EFF2882F2F500F6270F /* AppCoordinator.swift in Sources */,
 				7AD01EF6285920D300F6270F /* Collection+Save.swift in Sources */,
