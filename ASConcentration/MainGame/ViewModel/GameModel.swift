@@ -103,6 +103,7 @@ final class GameModel: GameModelProtocol {
 	}
 
 	private func startTimer() {
+		timer?.cancel()
 		timer = Timer.publish(every: 1, on: .main, in: .default)
 			.autoconnect()
 			.sink { [weak self] _ in

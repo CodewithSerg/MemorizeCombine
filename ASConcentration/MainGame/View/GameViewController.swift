@@ -42,7 +42,7 @@ final class GameViewController: UIViewController {
 
 	private let newGameButton: UIButton = {
 		let newGameButton = UIButton(type: .system)
-		newGameButton.setTitle("NEW GAME", for: .normal)
+		newGameButton.setTitle(GameString.newGameTitle.localized, for: .normal)
 		newGameButton.addTarget(self, action: #selector(resetGame), for: .touchUpInside)
 		return newGameButton
 	}()
@@ -70,7 +70,7 @@ final class GameViewController: UIViewController {
 		outputVC.send(.startTimer)
 	}
 
-	private func bind() {
+	private func bind() { //configureIO
 		let input = game.transform(outputVC: outputVC.eraseToAnyPublisher())
 		input
 			.receive(on: DispatchQueue.main)

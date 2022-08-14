@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Swinject
 
 enum Event {
 	case statisticButtonTapped
@@ -15,6 +16,7 @@ enum Event {
 class AppCoordinator: Coordinator {
 	
 	var navigationController: UINavigationController
+	static let container = Container()
 
 	init(navigationController: UINavigationController) {
 		self.navigationController = navigationController
@@ -30,11 +32,11 @@ class AppCoordinator: Coordinator {
 		switch type {
 		case .statisticButtonTapped:
 			let statisticModel = StatisticModel()
-			var statisticVc: UIViewController = StatisticViewController(vm: statisticModel)
+			let statisticVc: UIViewController = StatisticViewController(vm: statisticModel)
 			navigationController.setViewControllers([statisticVc], animated: true)
 		case .startGameButtonTapped:
 			let gameModel = GameModel()
-			var gameVc: UIViewController = GameViewController(model: gameModel)
+			let gameVc: UIViewController = GameViewController(model: gameModel)
 			navigationController.setViewControllers([gameVc], animated: true)
 		}
 	}
