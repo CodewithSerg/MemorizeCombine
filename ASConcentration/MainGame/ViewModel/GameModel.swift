@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 import Combine
+import RealmSwift
 
 protocol GameModelProtocol {
 	func transform(outputVC: AnyPublisher<GameModel.Output, Never>) -> AnyPublisher<GameModel.Input, Never>
@@ -23,17 +24,13 @@ final class GameModel: GameModelProtocol {
 	}
 
 	enum Input {
-//		case flipCard(card: Card)
-//		case removeMatchedCards(cards: [Int])
 		case redrawCards(cards: [Card])
 		case makeCards(cards: [Card])
 		case timerCount(count: String)
 		case makeNewCards(cards: [Card])
 	}
 
-	private var emojies = ["🐶", "🦋", "🐰",
-//						   "🐝", "🐽", "🐸", "🍏"
-	]
+	private var emojies = ["🐶", "🦋", "🐰", "🐝", "🐽", "🐸", "🍏"]
 	private var timerCount: Int = 0 {
 		didSet {
 			inputVC.send(.timerCount(count: "Timer : \(timerCount)"))
@@ -44,6 +41,7 @@ final class GameModel: GameModelProtocol {
 	private let inputVC = PassthroughSubject<GameModel.Input, Never>()
 	private var bag = Set<AnyCancellable>()
 	private var timer: AnyCancellable?
+	private let storage = StorageService.shared
 
 	init() {
 		makeCards()
@@ -88,6 +86,8 @@ final class GameModel: GameModelProtocol {
 
 	private func checkResultOFGame() {
 		if cards.allSatisfy({ $0.isMatched == true }) {
+			let info = InfoObject(date: Date(), duration: timerCount)
+			storage.save(info)
 			inputVC.send(.timerCount(count: "Good Result: \(timerCount)"))
 			timer?.cancel()
 		}

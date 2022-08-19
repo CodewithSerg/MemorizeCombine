@@ -5,4 +5,7 @@
   Created by Sergey Antoniuk on 14.08.22.
   
 */
-"GameString_newGame" = "Новая Игра";
+"GameVC_newGame" = "Новая Игра";
+
+"MainVC_newGame" = "Новая Игра";
+"MainVC_statisticTitle" = "Статистика";

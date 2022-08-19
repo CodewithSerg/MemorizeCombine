@@ -19,6 +19,9 @@ dist/
 # Package files
 *.jar
 
+# R.swift
+*.generated.swift
+
 # Maven
 target/
 dist/

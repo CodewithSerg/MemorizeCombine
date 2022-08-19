@@ -13,8 +13,5 @@ final class GameContainer {
 		container.register(UITableViewCell.self) { _ in
 			CustomCell()
 		}
-//		container.register(<#T##serviceType: Service.Type##Service.Type#>, name: <#T##String?#>) { <#Resolver#> in
-//			<#code#>
-//		}
 	}
 }

@@ -12,6 +12,7 @@ final class FakeStorageManager {
 
 	static let shared = FakeStorageManager()
 	private let infoPublisher = PassthroughSubject<[Info], Never>()
+	private let storage = StorageService.shared
 
 	private var info = [Info]() {
 		didSet {
@@ -20,11 +21,9 @@ final class FakeStorageManager {
 	}
 
 	init() {
-		DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-			self.info = [
-				Info(date: Date(), duration: 30),
-				Info(date: Date(timeIntervalSinceNow: 60), duration: 50)
-			]
+		let data = storage.realm?.objects(InfoObject.self).map{$0.toModel()}.suffix(5) // last 5 objects
+		DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+		self.info = Array(data!)
 		}
 	}
 

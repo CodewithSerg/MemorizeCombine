@@ -42,7 +42,7 @@ final class GameViewController: UIViewController {
 
 	private let newGameButton: UIButton = {
 		let newGameButton = UIButton(type: .system)
-		newGameButton.setTitle(GameString.newGameTitle.localized, for: .normal)
+		newGameButton.setTitle(GameVC.newGameTitle.localized, for: .normal)
 		newGameButton.addTarget(self, action: #selector(resetGame), for: .touchUpInside)
 		return newGameButton
 	}()

@@ -21,14 +21,14 @@ class MainViewController: UIViewController, Coordinating {
 
 	private let newGameButton: UIButton = {
 		let newGameButton = UIButton(type: .system)
-		newGameButton.setTitle("NEW GAME", for: .normal)
+		newGameButton.setTitle(MainVC.newGameTitle.localized, for: .normal)
 		newGameButton.addTarget(self, action: #selector(newGameTapped), for: .touchUpInside)
 		return newGameButton
 	}()
 
 	private let statisticGameButton: UIButton = {
 		let newGameButton = UIButton(type: .system)
-		newGameButton.setTitle("Game Statistic", for: .normal)
+		newGameButton.setTitle(MainVC.statisticTitle.localized, for: .normal)
 		newGameButton.addTarget(self, action: #selector(statisticGameTapped), for: .touchUpInside)
 		return newGameButton
 	}()

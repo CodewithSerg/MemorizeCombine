@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum GameString: String {
+enum GameVC: String {
 	case newGameTitle
 
 	var localized: String {
