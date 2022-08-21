@@ -7,9 +7,13 @@
 
 import RealmSwift
 
-final class StorageService {
+protocol Storable {
+	var realm: Realm? { get }
+	func save<Element: Object>(_ object: Element)
+	func readObjects<Element: Object>(_ type: Element.Type) -> Results<Element>?
+}
 
-	static let shared = StorageService()
+final class StorageService: Storable {
 
 	var realm: Realm?
 

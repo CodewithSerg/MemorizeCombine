@@ -30,6 +30,7 @@ final class GameModel: GameModelProtocol {
 		case makeNewCards(cards: [Card])
 	}
 
+	var storage: Storable!  //proprty DI
 	private var emojies = ["🐶", "🦋", "🐰", "🐝", "🐽", "🐸", "🍏"]
 	private var timerCount: Int = 0 {
 		didSet {
@@ -41,7 +42,6 @@ final class GameModel: GameModelProtocol {
 	private let inputVC = PassthroughSubject<GameModel.Input, Never>()
 	private var bag = Set<AnyCancellable>()
 	private var timer: AnyCancellable?
-	private let storage = StorageService.shared
 
 	init() {
 		makeCards()

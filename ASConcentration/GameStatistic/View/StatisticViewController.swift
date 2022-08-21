@@ -11,7 +11,6 @@ import Combine
 class StatisticViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
 	let vm: StatisticModelProtocol
-//	private let outputVC = PassthroughSubject<StatisticModel.Output, Never>()
 	private var bag = Set<AnyCancellable>()
 
 	let tableView: UITableView = {

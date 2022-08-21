@@ -25,17 +25,17 @@ final class StatisticModel: StatisticModelProtocol {
 			inputVC.send(.needUpdateTableView)
 		}
 	}
-
+	let storageManager: FakeStorageManagerProtocol
 	let inputVC = PassthroughSubject<StatisticModel.Input, Never>()
 	private var bag = Set<AnyCancellable>()
 
-	init() {
+	init(storageManager: FakeStorageManagerProtocol) {
+		self.storageManager = storageManager
 		bindForInfo()
 	}
 
 	private func bindForInfo() {
-		let storage = FakeStorageManager.shared.getResults()
-		storage
+		storageManager.getResults()
 			.sink { [weak self] infoData in
 				guard let self = self else {return}
 				self.infoData = infoData

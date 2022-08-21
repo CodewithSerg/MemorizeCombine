@@ -17,6 +17,13 @@ final class CustomCell: UITableViewCell {
 		return label
 	}()
 
+	var dateFormatter: DateFormatter {
+		let formatter = DateFormatter()
+		formatter.timeStyle = .medium
+		formatter.dateStyle = .medium
+		return formatter
+	}
+
 	override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
 		super.init(style: .value1, reuseIdentifier: reuseIdentifier)
 		setupView()
@@ -37,6 +44,6 @@ final class CustomCell: UITableViewCell {
 	}
 
 	func configureCell(with info: Info) {
-		infoLabel.text = "Result: \(info.date) with \(info.duration)"
+		infoLabel.text = "\(dateFormatter.string(from: info.date)) Result was : \(info.duration)"
 	 }
 }

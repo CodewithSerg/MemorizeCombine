@@ -8,11 +8,14 @@
 import Foundation
 import Combine
 
-final class FakeStorageManager {
+protocol FakeStorageManagerProtocol {
+	func getResults() -> AnyPublisher<[Info], Never>
+}
 
-	static let shared = FakeStorageManager()
+final class FakeStorageManager: FakeStorageManagerProtocol {
+
+	var storage: Storable
 	private let infoPublisher = PassthroughSubject<[Info], Never>()
-	private let storage = StorageService.shared
 
 	private var info = [Info]() {
 		didSet {
@@ -20,7 +23,8 @@ final class FakeStorageManager {
 		}
 	}
 
-	init() {
+	init(storage: Storable) {
+		self.storage = storage
 		let data = storage.realm?.objects(InfoObject.self).map{$0.toModel()}.suffix(5) // last 5 objects
 		DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
 		self.info = Array(data!)
